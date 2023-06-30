@@ -1,11 +1,14 @@
 let VSHADER_SOURCE = `
 attribute vec4 a_Position;
 uniform mat4 u_xformMatrix; // 旋转矩阵
+uniform mat4 u_xformMatrix_translate; // 平移矩阵
 void main()
 {
     
-    // 先平移 再旋转 再缩放
-    gl_Position = u_xformMatrix * a_Position;
+    // 先平移 再旋转
+    gl_Position = u_xformMatrix * u_xformMatrix_translate * a_Position;
+    // 先旋转再平移
+    // gl_Position = u_xformMatrix_translate * u_xformMatrix * a_Position;
 }
 `;
 // 片元着色器
@@ -54,6 +57,12 @@ function main() {
 
     gl.uniformMatrix4fv(u_xformMatrix, false, xformMatrix.elements);
 
+    // 将 xformMatrix 设置为平移矩阵
+    let xformMatrix_translate = new Matrix4();
+    xformMatrix_translate.setTranslate(0.5, 0.5, 0.5);
+    // 将旋转矩阵传输给顶点着色器
+    let u_xformMatrix_translate = gl.getUniformLocation(gl.program, 'u_xformMatrix_translate');
+    gl.uniformMatrix4fv(u_xformMatrix_translate, false, xformMatrix_translate.elements);
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
     gl.clear(gl.COLOR_BUFFER_BIT);
