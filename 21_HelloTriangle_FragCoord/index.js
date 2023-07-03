@@ -20,12 +20,6 @@ void main()
         gl_FragCoord.y/u_Height,
         1.0
     );
-    // gl_FragColor = vec4(
-    //     1.0,
-    //     0.0,
-    //     0.0,
-    //     1.0
-    // );
 }
 `;
 // 旋转角度
@@ -90,8 +84,6 @@ function initVertexBuffers(gl) {
     // 将顶点坐标和颜色写入缓冲区并开启
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-
-    let FSIZE = vertices.BYTES_PER_ELEMENT;
 
     // 获取 a_Positoin 的存储位置，分配缓冲区开启
     let a_Position = gl.getAttribLocation(gl.program, 'a_Position');
